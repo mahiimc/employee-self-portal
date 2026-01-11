@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService  {
             Throwable cause = ex.getCause();
             if (cause instanceof org.hibernate.exception.ConstraintViolationException cve) {
                 String sqlState = cve.getSQLState();
-                if (sqlState.equals("23505")) {
+                if ("23505".equals(sqlState)) {
                     throw new DuplicateUserException(user.getUsername());
                 }
             }
