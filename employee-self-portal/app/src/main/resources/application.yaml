@@ -36,4 +36,4 @@ logging:
   level:
     root: INFO
     org:
-      flywaydb=DEBUG:
+      flywaydb: DEBUG
