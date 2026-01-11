@@ -21,7 +21,7 @@ public class UserDaoImpl implements UserDao  {
 
         StringBuilder jpql = new StringBuilder("FROM User user WHERE user.id = :userId AND user.organizationId =:orgId");
         if ( status != null ) {
-            jpql.append(" AND u.status = :status");
+            jpql.append(" AND user.status = :status");
         }
 
         var query = entityManager.createQuery(jpql.toString(), User.class)

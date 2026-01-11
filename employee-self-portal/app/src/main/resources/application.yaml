@@ -22,6 +22,10 @@ spring:
     enabled: true
     baseline-on-migrate: true
 
+  springdoc:
+    api-docs:
+      enabled: true
+      path: /v3/api-docs
 
   messages:
     basename: messages

@@ -6,6 +6,10 @@ import com.imc.dto.UserResponse;
 import com.imc.entity.User;
 import com.imc.mapper.UserMapper;
 import com.imc.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,6 +36,16 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
+
+    @Operation(summary = "Create user",
+            description = "Creates a new user in the organization")
+
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "User created successfully",
+                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Invalid input"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "User already exists")
+    })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
@@ -40,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public UserResponse findUser(@PathVariable  Long userId) {
-        return userMapper.toResponse(userService.findUserById(userId));
+    public ApiResponse<UserResponse> findUser(@PathVariable  Long userId) {
+        return ApiResponse.success(userMapper.toResponse(userService.findUserById(userId)));
     }
 }
