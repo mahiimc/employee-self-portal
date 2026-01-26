@@ -11,5 +11,13 @@
 
     <artifactId>employee</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.imc</groupId>
+            <artifactId>common</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+    </dependencies>
+
 
 </project>
