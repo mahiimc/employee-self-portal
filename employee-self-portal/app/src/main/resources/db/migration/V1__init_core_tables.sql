@@ -1,44 +1,1 @@
--- ==============================================
--- Organization
--- ==============================================
-
-CREATE TABLE organizations (
-    id BIGSERIAL PRIMARY KEY,
-    name VARCHAR(150) NOT NULL,
-    type VARCHAR(30) NOT NULL,
-    status VARCHAR(30) NOT NULL,
-    created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP NOT NULL
-);
-
-INSERT INTO organizations(name, type, status, created_at, updated_at)
-VALUES ('SYSTEM', 'SUPER', 'ACTIVE', now(), now());
-
-
--- ==============================================
--- USERS
--- ==============================================
-
-CREATE TABLE users (
-
-    id BIGSERIAL PRIMARY KEY,
-    org_id BIGINT NOT NULL,
-    username VARCHAR(100) NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    status VARCHAR(30) NOT NULL,
-    created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP NOT NULL,
-    CONSTRAINT fk_user_org FOREIGN KEY (org_id) REFERENCES organizations(id)
-);
-
-CREATE UNIQUE INDEX uk_org_username ON users (org_id, username);
-
-
-
-
-
-
-
-
-
-
+-- ==============================================-- Organization-- ==============================================CREATE TABLE IF NOT EXISTS organizations  (    id BIGSERIAL PRIMARY KEY,    name VARCHAR(150) NOT NULL,    type VARCHAR(30) NOT NULL,    status VARCHAR(30) NOT NULL,    created_at TIMESTAMP NOT NULL,    updated_at TIMESTAMP NOT NULL);INSERT INTO organizations(name, type, status, created_at, updated_at)VALUES ('SYSTEM', 'SUPER', 'ACTIVE', now(), now());-- ==============================================-- USERS-- ==============================================CREATE TABLE IF NOT EXISTS users (    id BIGSERIAL PRIMARY KEY,    org_id BIGINT NOT NULL,    username VARCHAR(100) NOT NULL,    password_hash VARCHAR(255) NOT NULL,    status VARCHAR(30) NOT NULL,    created_at TIMESTAMP NOT NULL,     updated_at TIMESTAMP NOT NULL);CREATE UNIQUE INDEX  IF NOT EXISTS uk_org_username ON users (org_id, username);-- ========================================================-- DEPARTMENTS-- ========================================================CREATE TABLE IF NOT EXISTS departments  (    id BIGSERIAL PRIMARY KEY,    org_id BIGINT NOT NULL,    name VARCHAR(100) NOT NULL,    status VARCHAR(50) NOT NULL,    created_at TIMESTAMP NOT NULL,    updated_at TIMESTAMP NOT NULL);CREATE UNIQUE INDEX IF NOT EXISTS uk_org_dept_name ON departments (org_id, name);-- ========================================================-- EMPLOYEES-- ========================================================CREATE TABLE  IF NOT EXISTS employees (    id BIGSERIAL PRIMARY KEY,    user_id BIGINT NOT NULL,    org_id BIGINT NOT NULL,    role_id BIGINT NOT NULL,    dept_id BIGINT NOT NULL,    status VARCHAR(50) NOT NULL,    joined_on DATE NOT NULL,    profile_id BIGINT NOT NULL,    created_at TIMESTAMP NOT NULL,    updated_at TIMESTAMP NOT NULL);CREATE UNIQUE INDEX IF NOT EXISTS uk_org_user ON employees (org_id, user_id);-- ========================================================-- ROLES-- ========================================================CREATE TABLE  IF NOT EXISTS roles (    id BIGSERIAL PRIMARY KEY,    org_id BIGINT NOT NULL,    name VARCHAR(50) NOT NULL,    active BOOLEAN NOT NULL DEFAULT TRUE,    created_at TIMESTAMP NOT NULL,    updated_at TIMESTAMP NOT NULL,    CONSTRAINT uk_org_role_name UNIQUE (org_id, name));INSERT INTO roles (org_id, name, active, created_at, updated_at) VALUES (1, 'EMPLOYEE', true, now(), now());INSERT INTO roles (org_id, name, active, created_at, updated_at) VALUES (1, 'HR', true,  now(), now());INSERT INTO roles (org_id, name, active, created_at, updated_at) VALUES (1, 'MANAGER', true,  now(), now());INSERT INTO roles (org_id, name, active, created_at, updated_at) VALUES (1, 'ADMIN', true,  now(), now());CREATE TABLE IF NOT EXISTS profile (    id BIGSERIAL PRIMARY KEY,    first_name VARCHAR(100),    last_name VARCHAR(100),    email VARCHAR(100),    mobile VARCHAR(100),    created_at TIMESTAMP NOT NULL,    updated_at TIMESTAMP NOT NULL);
